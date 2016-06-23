@@ -1,0 +1,214 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>Document</title>
+</head>
+<!-- <script src="fuhao.js"></script> -->
+<style>
+	html,body{
+		width: 100%;
+		height: 100%;
+	}
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	.box{
+		width: 100%;
+		height: 100%;
+		position: relative;
+		top: 0;
+		left: 0;
+		overflow: hidden;
+	}
+	.zi{
+		display: inline-block;
+		background: url(f1.png);
+		width: 67px;
+		height: 61px;
+		color: #fff;
+		font-size: 22px;
+		text-align: center;
+		line-height: 61px;
+		font-weight: bold;
+		position: absolute;
+		top: 20px;
+	}
+	.tu{
+		width: 100%;
+		height: 100%;
+	}
+	.shouye{
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		background: #fff;
+	}
+	.shouye img{
+		width: 530px;
+		height: 640px;
+		display: block;
+		margin: 0 auto;
+		margin-top: 9px;
+	}
+
+	.left{
+		width: 150px;
+		height: 500px;
+		background: url(f10.jpg);
+		position: absolute;
+		left: 20px;
+		top: 20px;
+	}
+	.right{
+		width: 200px;
+		height: 100px;
+		position: absolute;
+		right: 60px;
+		bottom: 50px;
+		background: url(f8.jpg);
+	}
+</style>
+<body>
+	<div class="shouye">
+		<div class="left"></div>
+		<img src="f5.jpg" alt="">
+		<div class="right"></div>
+	</div>
+		<div class="box">
+			<img src="f2.jpg" alt="" class="tu">
+			<!-- <div class="zi">a</div> -->
+		</div>
+
+</body>
+<script src="jQuery-1.12.0.js"></script>
+<script type="text/javascript">
+	// var box=document.querySelector(".box");
+	// var zimujihe={}
+	// var creatzimu=function(){
+	// 	var zimu=String.fromCharCode(Math.floor(Math.random()*25+97));
+	// 	var el=document.createElement("div");
+	// 		el.classList.add("zi");
+	// 		el.innerHTML=String.fromCharCode(Math.floor(Math.random()*25+97))
+	// 		box.appendChild(el);
+
+	// 		zimujihe[zimu]=el;
+	// 		console.log(zimujihe)
+	// }
+	// var removezimu=function(zimu){
+	// 	var el=zimujihe[zimu];
+	// 	el.parentElement.removeChild(el);
+	// 	delete zimujihe[key];
+	// }
+	// creatzimu();
+	// document.onkeyup=function(e){
+	// 	var key=String.fromCharCode(e.keyCode).toLowerCase();
+	// 	if(zimujihe[key]){
+	// 		var el=zimujihe[key];
+	// 		removezimu(key);
+	// 		creatzimu();
+	// 	}
+	// }
+	// document.onkeyup=function(e){
+	// 	var key=String.fromCharCode(e.keyCode).toLowerCase()
+	// 	if(key==="a"){
+	// 		box.removeChild(box.firstElementChild);	//去除第一个子元素
+	// 		var el=document.createElement("div");  //创建一个元素
+	// 		el.classList.add("zi");		//创建一个类名
+	// 		el.innerHTML=String.fromCharCode(Math.floor(Math.random()*25+97))	//
+	// 		box.appendChild(el)		//把创建的元素放在页面中（box的里面）
+	// 	}
+	// }
+
+	var box=document.getElementsByClassName("box")[0]
+	var zimujihe={}  //创建一个空的对象 ｛"zimu":el｝zim按键，el是div zi
+		function creatzimu(){
+			do{
+				var zimu=String.fromCharCode(Math.floor(Math.random()*25+97))  //取到随机字母
+			}while(zimujihe[zimu])
+			var el=document.createElement("div")   //创建一个div
+			el.classList.add("zi");   //给创建的div加上类名
+			el.innerHTML=zimu;      //给div里面加上取到的随机字母
+			box.appendChild(el)     //把div放在界面中
+			el.style.left=Math.floor(Math.random()*(box.offsetWidth-el.offsetWidth))+"px"
+			var ma=Math.ceil(Math.random()*4)
+			zimujihe[zimu]={yuan:el,top:0,ran:ma}
+			// zimujihe[zimu]=el   //数据结构 键 值
+
+		}
+
+		 function removezimu(zi){
+			var el=zimujihe[zi].yuan   //把键给了el
+			el.parentElement.removeChild(el);   //找到键的父元素，再找到键删除(在界面中删除)
+	 		delete zimujihe[zi];  //在内存中删除
+		}
+		creatzimu();
+		creatzimu();
+		creatzimu();
+		document.onkeyup=function(e){
+			var key=String.fromCharCode(e.keyCode).toLowerCase()   //键盘转化为小写的字母
+			if(zimujihe[key]){
+				removezimu(key)
+				creatzimu()
+			}
+		}
+
+
+		var x=box.offsetHeight
+		var t=setInterval(diao,20)
+	    function diao(){
+	    	var arr=[];
+			for(var i in zimujihe){    //i是键
+				var el=zimujihe[i];
+				el.top+=el.ran
+				el.yuan.style.top=el.top+"px"
+				if(el.top>x){
+					arr.push(i)
+				}
+
+			}
+			if(arr.length>0){
+				for(var j=0;j<arr.length;j++){
+					removezimu(arr[j])
+					creatzimu()
+				}
+			}
+		}
+		function zanting(e){
+			if(t){
+				clearInterval(t)
+				t=null
+			}else{
+				t=setInterval(diao,20)
+			}
+		}
+		$('.right').bind('click',function(){
+			$('.shouye').css('display','none')
+			$('.box1').css('display','block')
+
+		})
+	// document.onkeydown=function(e){
+	// 	console.log("down",e)
+	// }
+	// document.onkeyup=function(e){
+	// 	console.log("up",e)
+	// }
+	// document.onkeypress=function(e){
+	// 	console.log("press",e)
+	// }
+	// 输出ascall码
+	// for(i=0;i<200;i++){
+	// 	console.log(i,String.fromCharCode(i))
+	// }
+	// var obj={};
+	// for(var i=10000;i<10100;i++){
+	// 	obj[i]=String.fromCharCode(i)
+	// }
+	// console.log(JSON.stringify(obj))
+
+</script>
+</html>
